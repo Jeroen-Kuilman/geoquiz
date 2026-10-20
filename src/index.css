@@ -1,0 +1,146 @@
+:root {
+  --dark-blue: #0d1b2aff;
+  --medium-blue: #1b365dff;
+  --light-blue: #2e5b88ff;
+  --light-blue-transparent: rgb(46, 91, 136, 70%);
+  --dark-green: #3fa56bff;
+  --light-green: #62c48aff;
+  --light-green-transparent: rgb(98, 196, 138, 90%);
+  --grey: #e5e7ebff;
+  --off-white: #f6f8faff;
+  --off-white-transparent: rgb(246, 248, 250, 50%);
+  --white: #ffffffff;
+
+  --dark-blue-text: #14213d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-size: 3.6rem;
+}
+
+p {
+  font-size: 1.6rem;
+}
+
+.app {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+.app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    var(--dark-blue) 0%,
+    var(--light-blue) 40%,
+    var(--light-green) 100%
+  );
+  opacity: 80%;
+
+  z-index: -1;
+}
+
+.header {
+  min-height: 30dvh;
+  color: var(--white);
+  display: flex;
+  padding: 1.5rem 1rem;
+  position: relative;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* linear-gradient(
+      var(--light-blue-transparent) 0%,
+      var(--light-blue-transparent) 70%,
+      var(--dark-blue) 100%
+    ), */ url("./assets/hero-nature-background-landscape.webp");
+
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  opacity: 70%;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      var(--light-blue-transparent) 0%,
+      var(--light-blue-transparent) 100%
+    ),
+    url("./assets/World-map-logo.webp");
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  z-index: -1;
+
+  opacity: 50%;
+}
+
+.content-box {
+  flex: 1;
+  display: flex;
+  width: min(96%, 45rem);
+  margin: auto;
+  padding: 1.5rem 2rem;
+
+  background-color: var(--off-white);
+  color: var(--dark-blue-text);
+
+  border-radius: 1rem;
+}
+
+.footer {
+  min-height: 10dvh;
+  color: var(--white);
+}
+
+.title-box {
+  padding-left: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  align-self: flex-end;
+}
+.title {
+  text-decoration: var(--light-green) wavy underline;
+  text-underline-offset: 0.7rem;
+}
+
+.title-green {
+  color: var(--light-green);
+  font-size: 4.6rem;
+  font-style: italic;
+}
+
+.sub-title {
+  font-size: 1.2rem;
+  letter-spacing: 0.08rem;
+  padding: 0 3rem;
+}
