@@ -6,7 +6,7 @@
   --dark-green: #3fa56bff;
   --light-green: #62c48aff;
   --light-green-transparent: rgb(98, 196, 138, 90%);
-  --grey: #e5e7ebff;
+  --grey: rgb(224, 226, 230);
   --off-white: #f6f8faff;
   --off-white-transparent: rgb(246, 248, 250, 50%);
   --white: #ffffffff;
@@ -26,14 +26,24 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
+  color: var(--dark-blue-text);
 }
 
 h1 {
   font-size: 3.6rem;
+  color: var(--white);
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+
+h3 {
+  font-size: 1.8rem;
 }
 
 p {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
 .app {
@@ -49,9 +59,9 @@ p {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    var(--dark-blue) 0%,
-    var(--light-blue) 40%,
-    var(--light-green) 100%
+    var(--light-blue) 0%,
+    var(--dark-blue) 80%,
+    var(--light-blue) 100%
   );
   opacity: 80%;
 
@@ -60,22 +70,18 @@ p {
 
 .header {
   min-height: 30dvh;
-  color: var(--white);
   display: flex;
   padding: 1.5rem 1rem;
   position: relative;
+
+  color: var(--white);
 }
 
 .header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    /* linear-gradient(
-      var(--light-blue-transparent) 0%,
-      var(--light-blue-transparent) 70%,
-      var(--dark-blue) 100%
-    ), */ url("./assets/hero-nature-background-landscape.webp");
+  background-image: url("./assets/hero-nature-background-landscape.webp");
 
   background-size: cover;
   background-position: center;
@@ -98,20 +104,22 @@ p {
   background-repeat: no-repeat;
   background-position: center;
 
+  box-shadow: inset 0 0 0 4000px var(--light-blue-transparent);
+
   z-index: -1;
 
-  opacity: 50%;
+  opacity: 70%;
 }
 
 .content-box {
   flex: 1;
   display: flex;
+  flex-direction: column;
   width: min(96%, 45rem);
   margin: auto;
   padding: 1.5rem 2rem;
 
-  background-color: var(--off-white);
-  color: var(--dark-blue-text);
+  background-color: var(--white);
 
   border-radius: 1rem;
 }
@@ -119,6 +127,58 @@ p {
 .footer {
   min-height: 10dvh;
   color: var(--white);
+}
+
+.button-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 2rem;
+}
+.button {
+  min-width: 8rem;
+  background: var(--dark-green);
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  border-radius: 2rem;
+  border: none;
+  box-shadow:
+    1px 3px 2px var(--light-green),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+
+  font-size: 1.2rem;
+  color: var(--white);
+  font-weight: 700;
+
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+
+  touch-action: manipulation;
+}
+
+.button:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 2px 0 var(--light-green),
+    0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button-active {
+  background-color: var(--grey);
+  box-shadow:
+    1px 3px 2px var(--grey),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+  color: var(--dark-blue-text);
+}
+.button-active:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 2px 0 var(--grey),
+    0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .title-box {
@@ -143,4 +203,9 @@ p {
   font-size: 1.2rem;
   letter-spacing: 0.08rem;
   padding: 0 3rem;
+}
+
+.difficulty-section {
+  display: flex;
+  flex-direction: row;
 }
