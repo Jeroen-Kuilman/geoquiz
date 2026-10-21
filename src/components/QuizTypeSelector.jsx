@@ -1,14 +1,16 @@
-export default function QuizTypeSelector({ children }) {
+export default function QuizTypeSelector({ children, quizIcon }) {
   return (
-    <>
-      <div className="question-type-section">
-        🌄
+    <section>
+      <div className="content-box-text-section">
+        <span className="content-icon" aria-hidden="true">
+          {quizIcon}
+        </span>
         <div>
           <h3>Choose type</h3>
           <p>select your prefered quiz</p>
         </div>
       </div>
       <div>{children}</div>
-    </>
+    </section>
   );
 }

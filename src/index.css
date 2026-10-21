@@ -6,9 +6,10 @@
   --dark-green: #3fa56bff;
   --light-green: #62c48aff;
   --light-green-transparent: rgb(98, 196, 138, 90%);
-  --grey: rgb(224, 226, 230);
+  --light-green-extreme-transparent: rgb(98, 196, 138, 45%);
+
+  --grey: #d7d9dc;
   --off-white: #f6f8faff;
-  --off-white-transparent: rgb(246, 248, 250, 50%);
   --white: #ffffffff;
 
   --dark-blue-text: #14213d;
@@ -118,6 +119,7 @@ p {
   width: min(96%, 45rem);
   margin: auto;
   padding: 1.5rem 2rem;
+  gap: 3rem;
 
   background-color: var(--white);
 
@@ -127,6 +129,10 @@ p {
 .footer {
   min-height: 10dvh;
   color: var(--white);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .button-section {
@@ -134,21 +140,21 @@ p {
   flex-direction: row;
   justify-content: center;
   gap: 0.8rem;
-  padding: 2rem;
+  padding: 1rem;
 }
 .button {
   min-width: 8rem;
-  background: var(--dark-green);
+  background: var(--grey);
   cursor: pointer;
   padding: 0.7rem 1.5rem;
-  border-radius: 2rem;
+  border-radius: 1.2rem;
   border: none;
-  box-shadow:
-    1px 3px 2px var(--light-green),
-    0 8px 20px rgba(0, 0, 0, 0.15);
+  border-bottom: solid 0.2rem;
+  border-color: var(--light-green-transparent);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 
   font-size: 1.2rem;
-  color: var(--white);
+  color: var(--dark-blue-text);
   font-weight: 700;
 
   transition:
@@ -160,25 +166,17 @@ p {
 
 .button:active {
   transform: translateY(3px);
-
-  box-shadow:
-    0 2px 0 var(--light-green),
-    0 3px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
-.button-active {
-  background-color: var(--grey);
-  box-shadow:
-    1px 3px 2px var(--grey),
-    0 8px 20px rgba(0, 0, 0, 0.15);
-  color: var(--dark-blue-text);
+.button.active {
+  background-color: var(--dark-green);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  color: var(--white);
 }
-.button-active:active {
+.button.active:active {
   transform: translateY(3px);
-
-  box-shadow:
-    0 2px 0 var(--grey),
-    0 3px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 .title-box {
@@ -200,12 +198,68 @@ p {
 }
 
 .sub-title {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   letter-spacing: 0.08rem;
   padding: 0 3rem;
 }
 
-.difficulty-section {
+.content-box-text-section {
   display: flex;
   flex-direction: row;
+  margin-bottom: 1.5rem;
+}
+.content-box-text-section p {
+  font-size: 1.2rem;
+}
+
+.content-icon {
+  color: var(--dark-green);
+  align-self: center;
+  padding: 0 2rem 0 1rem;
+  font-size: 2.5rem;
+}
+
+.quiz-type-box {
+  border-radius: 1.5rem;
+  background: var(--off-white);
+  width: 90%;
+  justify-self: center;
+  margin-bottom: 0.1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.quiz-type-box:hover {
+  transform: translateY(-1px);
+}
+
+.quiz-type-label {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+
+  align-items: center;
+  gap: 1.5rem;
+
+  padding: 1.5rem 3rem;
+  cursor: pointer;
+}
+.quiz-type-label p {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.quiz-icon {
+  color: var(--dark-blue-text);
+  font-size: 1.6rem;
+}
+
+.quiz-type-box.active {
+  background-color: var(--light-green-extreme-transparent);
+}
+
+.quiz-icon.active {
+  color: var(--dark-green);
 }
