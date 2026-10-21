@@ -9,10 +9,10 @@ import {
 import { FaEarthEurope } from "react-icons/fa6";
 import { BsStack } from "react-icons/bs";
 
-import Header from "./components/Header";
+import MenuHeader from "./components/MenuHeader";
 import Button from "./components/Button";
 import QuizType from "./components/QuizType";
-import ContentBox from "./components/ContentBox";
+import MenuOptions from "./components/MenuOptions";
 import DifficultySelector from "./components/DifficultySelector";
 import QuizTypeSelector from "./components/QuizTypeSelector";
 import QuestionsAmountSelector from "./components/QuestionsAmountSelector";
@@ -22,6 +22,7 @@ function App() {
   const [quizType, setQuizType] = useState("flag");
   const [difficultyType, setDifficultyType] = useState("easy");
   const [questionsAmountType, setQuestionsAmountType] = useState(5);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(function () {
     async function fetchCountryData() {
@@ -59,78 +60,93 @@ function App() {
     setQuestionsAmountType(value);
   }
 
+  function handleIsPlaying(value) {
+    setIsPlaying(value);
+  }
+
+  if (!isPlaying) {
+    return (
+      <div className="menu">
+        <MenuHeader />
+        <MenuOptions playIcon={<FaPlay />} onClick={handleIsPlaying}>
+          <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>
+            <Button
+              value={"easy"}
+              selected={difficultyType}
+              onClick={handleDifficultyType}
+            >
+              Easy
+            </Button>
+            <Button
+              value={"medium"}
+              selected={difficultyType}
+              onClick={handleDifficultyType}
+            >
+              Medium
+            </Button>
+            <Button
+              value={"hard"}
+              selected={difficultyType}
+              onClick={handleDifficultyType}
+            >
+              Hard
+            </Button>
+          </DifficultySelector>
+
+          <QuizTypeSelector quizIcon={<FaMap />}>
+            <QuizType
+              icon={<FaFlag />}
+              text={"Flag recognition"}
+              value={"flag"}
+              selected={quizType}
+              onChange={handleQuizType}
+            />
+            <QuizType
+              icon={<FaCity />}
+              text={"Capital cities"}
+              value={"capital"}
+              selected={quizType}
+              onChange={handleQuizType}
+            />
+          </QuizTypeSelector>
+
+          <QuestionsAmountSelector amountIcon={<BsStack />}>
+            <Button
+              value={5}
+              selected={questionsAmountType}
+              onClick={handleQuestionsAmountType}
+            >
+              5
+            </Button>
+            <Button
+              value={10}
+              selected={questionsAmountType}
+              onClick={handleQuestionsAmountType}
+            >
+              10
+            </Button>
+            <Button
+              value={20}
+              selected={questionsAmountType}
+              onClick={handleQuestionsAmountType}
+            >
+              20
+            </Button>
+          </QuestionsAmountSelector>
+        </MenuOptions>
+        <Footer icon={<FaEarthEurope />} />
+      </div>
+    );
+  }
   return (
-    <div className="app">
-      <Header />
-      <ContentBox playIcon={<FaPlay />}>
-        <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>
-          <Button
-            value={"easy"}
-            selectedValue={difficultyType}
-            onClick={handleDifficultyType}
-          >
-            Easy
-          </Button>
-          <Button
-            value={"medium"}
-            selectedValue={difficultyType}
-            onClick={handleDifficultyType}
-          >
-            Medium
-          </Button>
-          <Button
-            value={"hard"}
-            selectedValue={difficultyType}
-            onClick={handleDifficultyType}
-          >
-            Hard
-          </Button>
-        </DifficultySelector>
-
-        <QuizTypeSelector quizIcon={<FaMap />}>
-          <QuizType
-            icon={<FaFlag />}
-            text={"Flag recognition"}
-            value={"flag"}
-            selectedValue={quizType}
-            onQuizType={handleQuizType}
-          />
-          <QuizType
-            icon={<FaCity />}
-            text={"Capital cities"}
-            value={"capital"}
-            selectedValue={quizType}
-            onQuizType={handleQuizType}
-          />
-        </QuizTypeSelector>
-
-        <QuestionsAmountSelector amountIcon={<BsStack />}>
-          <Button
-            value={5}
-            selectedValue={questionsAmountType}
-            onClick={handleQuestionsAmountType}
-          >
-            5
-          </Button>
-          <Button
-            value={10}
-            selectedValue={questionsAmountType}
-            onClick={handleQuestionsAmountType}
-          >
-            10
-          </Button>
-          <Button
-            value={20}
-            selectedValue={questionsAmountType}
-            onClick={handleQuestionsAmountType}
-          >
-            20
-          </Button>
-        </QuestionsAmountSelector>
-      </ContentBox>
-      <Footer icon={<FaEarthEurope />} />
+    <div className="quiz">
+      <QuizHeader />
+      <QuizStats />
+      <div>{quizType}</div>
+      <QuizPrompt />
+      <QuizChoices />
+      <Footer />
     </div>
   );
 }
-
 export default App;

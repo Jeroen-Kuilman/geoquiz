@@ -6,7 +6,7 @@ export default function QuizTypeSelector({ children, quizIcon }) {
           {quizIcon}
         </span>
         <div>
-          <h3>Choose type</h3>
+          <h3>Choose quiz</h3>
           <p>select your prefered quiz</p>
         </div>
       </div>

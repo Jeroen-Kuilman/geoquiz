@@ -1,7 +1,7 @@
-export default function Button({ children, value, selectedValue, onClick }) {
+export default function Button({ children, value, selected, onClick }) {
   return (
     <button
-      className={`button ${selectedValue === value ? "active" : ""}`}
+      className={`button ${selected === value ? "active" : ""}`}
       onClick={() => onClick(value)}
     >
       {children}

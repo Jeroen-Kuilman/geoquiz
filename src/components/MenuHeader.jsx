@@ -1,6 +1,6 @@
-export default function Header() {
+export default function MenuHeader() {
   return (
-    <header className="header">
+    <header className="menu-header">
       <div className="title-box">
         <h1 className="title">
           Geo<span className="title-green">Quiz</span>
