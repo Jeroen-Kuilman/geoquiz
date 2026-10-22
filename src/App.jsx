@@ -1,60 +1,79 @@
 import { useEffect, useState } from "react";
-import {
-  FaFlag,
-  FaCity,
-  FaPlay,
-  FaBalanceScaleLeft,
-  FaMap,
-} from "react-icons/fa";
-import { FaEarthEurope } from "react-icons/fa6";
-import { BsStack } from "react-icons/bs";
 
-import MenuHeader from "./components/MenuHeader";
-import Button from "./components/Button";
-import QuizType from "./components/QuizType";
-import MenuOptions from "./components/MenuOptions";
-import DifficultySelector from "./components/DifficultySelector";
-import QuizTypeSelector from "./components/QuizTypeSelector";
-import QuestionsAmountSelector from "./components/QuestionsAmountSelector";
-import Footer from "./components/Footer";
-
-import QuizHeader from "./components/QuizHeader";
-import QuizStats from "./components/QuizStats";
-import ProgressTracker from "./components/ProgressTracker";
-import ScoreBox from "./components/ScoreBox";
-import QuizPrompt from "./components/QuizPrompt";
-import QuizChoices from "./components/QuizChoices";
+import StartScreen from "./screens/StartScreen";
+import QuizScreen from "./screens/QuizScreen";
+import { QUIZ_TYPES, QUIZ_SETTINGS } from "./data/quizConfig";
 
 function App() {
-  const [quizType, setQuizType] = useState("flag");
-  const [difficultyType, setDifficultyType] = useState("easy");
-  const [questionsAmountType, setQuestionsAmountType] = useState(5);
+  const [quizType, setQuizType] = useState(QUIZ_TYPES.flag.value);
+  const [difficultyType, setDifficultyType] = useState(
+    QUIZ_SETTINGS.difficulty.easy,
+  );
+  const [questionsAmountType, setQuestionsAmountType] = useState(
+    QUIZ_SETTINGS.questionsAmount.low,
+  );
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(2);
 
-  const progress = (currentQuestion / questionsAmountType) * 100;
+  const [countries, setCountries] = useState([]);
+  const [quizCountries, setQuizCountries] = useState([]);
+  const [currentCountry, setCurrentCountry] = useState(0);
+  const [currentRound, setCurrentRound] = useState(1);
+
+  const progress = (currentRound / questionsAmountType) * 100;
 
   useEffect(function () {
-    async function fetchCountryData() {
+    const fetchCountryData = async function () {
       try {
-        const res = await fetch(
-          `https://api.restcountries.com/countries/v5?q=canada`,
-          {
-            headers: {
-              Authorization: "Bearer rc_live_a6971c2bf92044378f4e56358c460f3b",
-            },
-          },
-        );
+        const [countryInfoRes, countryPopRes] = await Promise.all([
+          fetch(
+            "https://countriesnow.space/api/v0.1/countries/info?returns=name,flag,capital",
+          ),
+          fetch("https://countriesnow.space/api/v0.1/countries/population"),
+        ]);
 
-        if (!res.ok) throw new Error("TEST");
+        if (!countryInfoRes.ok && !countryPopRes.ok)
+          throw new Error("Complete fetch failure");
 
-        const data = await res.json();
+        if (!countryInfoRes.ok || !countryPopRes.ok)
+          throw new Error("Partial fetch failure");
 
-        console.log(data);
+        const [countryInfoData, countryPopData] = await Promise.all([
+          countryInfoRes.json(),
+          countryPopRes.json(),
+        ]);
+
+        const populations = countryPopData.data;
+
+        const countries = countryInfoData.data
+          .map((country) => {
+            const populationData = populations.find(
+              (p) => p.country === country.name,
+            );
+
+            const latestPopulation =
+              populationData?.populationCounts?.at(-1)?.value ?? null;
+
+            return {
+              name: country.name,
+              flag: country.flag,
+              capital: country.capital,
+              population: Number(latestPopulation),
+            };
+          })
+          .filter(
+            (country) =>
+              country.name &&
+              country.capital &&
+              country.flag &&
+              country.population > 0,
+          );
+        console.log(countries);
+
+        setCountries(countries);
       } catch (err) {
         console.error(err);
       }
-    }
+    };
     fetchCountryData();
   }, []);
 
@@ -71,112 +90,43 @@ function App() {
   }
 
   function handleIsPlaying(value) {
+    const randomNumber = Math.floor(Math.random() * countries.length);
+
     setIsPlaying(value);
+    setQuizCountries([...countries]);
+    setCurrentCountry(randomNumber);
+  }
+
+  function handleCurrentRound() {
+    setCurrentRound((currentRound) => currentRound + 1);
   }
 
   if (!isPlaying) {
     return (
-      <div className="app menu">
-        <MenuHeader />
-        <MenuOptions playIcon={<FaPlay />} onClick={handleIsPlaying}>
-          <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>
-            <Button
-              value={"easy"}
-              selected={difficultyType}
-              onClick={handleDifficultyType}
-            >
-              Easy
-            </Button>
-            <Button
-              value={"medium"}
-              selected={difficultyType}
-              onClick={handleDifficultyType}
-            >
-              Medium
-            </Button>
-            <Button
-              value={"hard"}
-              selected={difficultyType}
-              onClick={handleDifficultyType}
-            >
-              Hard
-            </Button>
-          </DifficultySelector>
-
-          <QuizTypeSelector quizIcon={<FaMap />}>
-            <QuizType
-              icon={<FaFlag />}
-              text={"Flag recognition"}
-              value={"flag"}
-              selected={quizType}
-              onChange={handleQuizType}
-            />
-            <QuizType
-              icon={<FaCity />}
-              text={"Capital cities"}
-              value={"capital"}
-              selected={quizType}
-              onChange={handleQuizType}
-            />
-          </QuizTypeSelector>
-
-          <QuestionsAmountSelector amountIcon={<BsStack />}>
-            <Button
-              value={5}
-              selected={questionsAmountType}
-              onClick={handleQuestionsAmountType}
-            >
-              5
-            </Button>
-            <Button
-              value={10}
-              selected={questionsAmountType}
-              onClick={handleQuestionsAmountType}
-            >
-              10
-            </Button>
-            <Button
-              value={20}
-              selected={questionsAmountType}
-              onClick={handleQuestionsAmountType}
-            >
-              20
-            </Button>
-          </QuestionsAmountSelector>
-        </MenuOptions>
-        <Footer icon={<FaEarthEurope />} />
-      </div>
+      <StartScreen
+        difficultyType={difficultyType}
+        quizType={quizType}
+        questionsAmountType={questionsAmountType}
+        onQuizType={handleQuizType}
+        onDifficultyType={handleDifficultyType}
+        onQuestionsAmountType={handleQuestionsAmountType}
+        onIsPlaying={handleIsPlaying}
+      />
     );
   }
   return (
-    <div className="app quiz">
-      <QuizHeader onClick={handleIsPlaying} />
-      <QuizStats quizType={quizType}>
-        <ProgressTracker
-          progress={progress}
-          current={currentQuestion}
-          total={questionsAmountType}
-        />
-        <div className="score-boxes">
-          <ScoreBox
-            icon={<FaPlay />}
-            text={"Score"}
-            current={1}
-            total={questionsAmountType}
-            className={"score"}
-          />
-          <ScoreBox
-            icon={<FaPlay />}
-            text={"Streak"}
-            current={5}
-            className={"streak"}
-          />
-        </div>
-      </QuizStats>
-      <QuizPrompt />
-      <QuizChoices />
-      <Footer icon={<FaEarthEurope />} />
-    </div>
+    <QuizScreen
+      difficultyType={difficultyType}
+      quizType={quizType}
+      questionsAmountType={questionsAmountType}
+      onIsPlaying={handleIsPlaying}
+      progress={progress}
+      quizCountries={quizCountries}
+      currentCountry={currentCountry}
+      onCurrentRound={handleCurrentRound}
+    />
   );
 }
 export default App;
+
+//

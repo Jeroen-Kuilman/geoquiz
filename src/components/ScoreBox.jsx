@@ -4,10 +4,10 @@ export default function ScoreBox({ icon, text, current, total, className }) {
       <span>{icon}</span>
       <div className="score-box-text">
         <p>{text}</p>
-        <div>
+        <p>
           {current}
           {total ? `/${total}` : ""}
-        </div>
+        </p>
       </div>
     </div>
   );

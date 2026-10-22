@@ -11,3 +11,16 @@ export const QUIZ_TYPES = {
     icon: FaCity,
   },
 };
+
+export const QUIZ_SETTINGS = {
+  difficulty: {
+    easy: "easy",
+    medium: "medium",
+    hard: "hard",
+  },
+  questionsAmount: {
+    low: 5,
+    average: 10,
+    high: 20,
+  },
+};

@@ -1,9 +1,7 @@
-export default function ProgressTracker({ progress, current, total }) {
+export default function ProgressTracker({ progress }) {
   return (
     <div className="progress-bar">
-      <div className="progress-fill" style={{ width: `${progress}%` }}>
-        {current}/{total}
-      </div>
+      <div className="progress-fill" style={{ width: `${progress}%` }}></div>
     </div>
   );
 }
