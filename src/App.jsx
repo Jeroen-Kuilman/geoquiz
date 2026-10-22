@@ -18,11 +18,21 @@ import QuizTypeSelector from "./components/QuizTypeSelector";
 import QuestionsAmountSelector from "./components/QuestionsAmountSelector";
 import Footer from "./components/Footer";
 
+import QuizHeader from "./components/QuizHeader";
+import QuizStats from "./components/QuizStats";
+import ProgressTracker from "./components/ProgressTracker";
+import ScoreBox from "./components/ScoreBox";
+import QuizPrompt from "./components/QuizPrompt";
+import QuizChoices from "./components/QuizChoices";
+
 function App() {
   const [quizType, setQuizType] = useState("flag");
   const [difficultyType, setDifficultyType] = useState("easy");
   const [questionsAmountType, setQuestionsAmountType] = useState(5);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(2);
+
+  const progress = (currentQuestion / questionsAmountType) * 100;
 
   useEffect(function () {
     async function fetchCountryData() {
@@ -66,7 +76,7 @@ function App() {
 
   if (!isPlaying) {
     return (
-      <div className="menu">
+      <div className="app menu">
         <MenuHeader />
         <MenuOptions playIcon={<FaPlay />} onClick={handleIsPlaying}>
           <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>
@@ -139,13 +149,33 @@ function App() {
     );
   }
   return (
-    <div className="quiz">
-      <QuizHeader />
-      <QuizStats />
-      <div>{quizType}</div>
+    <div className="app quiz">
+      <QuizHeader onClick={handleIsPlaying} />
+      <QuizStats quizType={quizType}>
+        <ProgressTracker
+          progress={progress}
+          current={currentQuestion}
+          total={questionsAmountType}
+        />
+        <div className="score-boxes">
+          <ScoreBox
+            icon={<FaPlay />}
+            text={"Score"}
+            current={1}
+            total={questionsAmountType}
+            className={"score"}
+          />
+          <ScoreBox
+            icon={<FaPlay />}
+            text={"Streak"}
+            current={5}
+            className={"streak"}
+          />
+        </div>
+      </QuizStats>
       <QuizPrompt />
       <QuizChoices />
-      <Footer />
+      <Footer icon={<FaEarthEurope />} />
     </div>
   );
 }

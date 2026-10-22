@@ -3,6 +3,8 @@
   --medium-blue: #1b365dff;
   --light-blue: #2e5b88ff;
   --light-blue-transparent: rgb(46, 91, 136, 70%);
+  --light-blue-extreme-transparent: rgb(46, 91, 136, 45%);
+
   --dark-green: #3fa56bff;
   --light-green: #62c48aff;
   --light-green-transparent: rgb(98, 196, 138, 90%);
@@ -47,15 +49,15 @@ p {
   font-size: 1.4rem;
 }
 
-.menu {
+.app {
   position: relative;
   min-height: 100dvh;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
 }
-.menu::before {
+
+.app.menu::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -191,10 +193,11 @@ p {
 
 .title-green {
   color: var(--light-green);
-  font-size: 4.6rem;
   font-style: italic;
 }
-
+.title-green.menu {
+  font-size: 4.6rem;
+}
 .sub-title {
   font-size: 1.6rem;
   letter-spacing: 0.08rem;
@@ -265,4 +268,81 @@ p {
 .start-quiz-section {
   display: flex;
   justify-content: center;
+}
+
+/* Quiz page specific */
+
+.app.quiz {
+  background-color: var(--off-white);
+}
+
+.quiz-header {
+  min-height: 10dvh;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 2rem 2rem 2rem;
+}
+.quiz-header-content {
+  display: flex;
+  color: var(--dark-blue-text);
+  gap: 7rem;
+}
+.quiz-header-content h1 {
+  font-size: 2.4rem;
+  color: inherit;
+}
+.header-arrow {
+  font-size: 2.4rem;
+  color: var(--dark-green);
+  min-width: 6rem;
+}
+
+.quiz-stats-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.progress-bar {
+  width: 80%;
+  height: 1rem;
+  background-color: var(--grey);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--light-green);
+  transition: width 0.3 ease;
+}
+
+.score-boxes {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.score-box {
+  display: flex;
+  padding: 1rem 2rem;
+  min-width: 15rem;
+  align-items: center;
+  gap: 2rem;
+  border-radius: 1.5rem;
+}
+
+.score-box.score {
+  background: var(--light-green-extreme-transparent);
+}
+.score-box.streak {
+  background-color: var(--light-blue-extreme-transparent);
+}
+
+.score-box-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
