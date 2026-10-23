@@ -13,13 +13,53 @@ function App() {
     QUIZ_SETTINGS.questionsAmount.low,
   );
   const [isPlaying, setIsPlaying] = useState(false);
-
   const [countries, setCountries] = useState([]);
   const [quizCountries, setQuizCountries] = useState([]);
-  const [currentCountry, setCurrentCountry] = useState(0);
-  const [currentRound, setCurrentRound] = useState(1);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [score, setScore] = useState(0);
 
+  const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
+  const answers = currentCountry
+    ? generateAnswers(currentCountry, quizCountries)
+    : [];
+
+  function getShuffledCountries(countries, difficultyType) {
+    const eligibleCountries = countries.filter(
+      (country) =>
+        country.population >= difficultyType.minPopulation &&
+        country.population < difficultyType.maxPopulation,
+    );
+
+    const shuffled = [...eligibleCountries];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  function generateAnswers(currentCountry, selectedCountries) {
+    const wrongAnswers = selectedCountries
+      .filter((country) => country.name !== currentCountry.name)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+
+    const answers = [currentCountry, ...wrongAnswers];
+
+    return answers.sort(() => Math.random() - 0.5);
+  }
+
+  function checkAnswer(rightAnswer, answer) {
+    const response =
+      rightAnswer.toLowerCase().replace(/\s+/g, "") ===
+      answer.toLowerCase().replace(/\s+/g, "")
+        ? `Correct it was ${rightAnswer}`
+        : `Wrong it was ${rightAnswer}`;
+    console.log(response);
+    return response;
+  }
 
   useEffect(function () {
     const fetchCountryData = async function () {
@@ -67,7 +107,6 @@ function App() {
               country.flag &&
               country.population > 0,
           );
-        console.log(countries);
 
         setCountries(countries);
       } catch (err) {
@@ -90,15 +129,29 @@ function App() {
   }
 
   function handleIsPlaying(value) {
-    const randomNumber = Math.floor(Math.random() * countries.length);
-
     setIsPlaying(value);
-    setQuizCountries([...countries]);
-    setCurrentCountry(randomNumber);
+    const selectedCountries = getShuffledCountries(countries, difficultyType);
+
+    const firstCountry = selectedCountries[0];
+    generateAnswers(firstCountry, selectedCountries);
+
+    setQuizCountries(selectedCountries);
   }
 
-  function handleCurrentRound() {
-    setCurrentRound((currentRound) => currentRound + 1);
+  function handleNextRound(value) {
+    checkAnswer(currentCountry.name, value);
+
+    if (currentRound !== questionsAmountType - 1) {
+      const nextRound = currentRound + 1;
+      const nextCountry = quizCountries[nextRound];
+      generateAnswers(nextCountry, quizCountries);
+
+      setCurrentRound(nextRound);
+    } else {
+      setQuizCountries([]);
+      setCurrentRound(0);
+      setIsPlaying(false);
+    }
   }
 
   if (!isPlaying) {
@@ -116,14 +169,14 @@ function App() {
   }
   return (
     <QuizScreen
-      difficultyType={difficultyType}
       quizType={quizType}
       questionsAmountType={questionsAmountType}
-      onIsPlaying={handleIsPlaying}
       progress={progress}
       quizCountries={quizCountries}
       currentCountry={currentCountry}
-      onCurrentRound={handleCurrentRound}
+      answers={answers}
+      onIsPlaying={handleIsPlaying}
+      onNextRound={handleNextRound}
     />
   );
 }

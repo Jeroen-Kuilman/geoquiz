@@ -12,11 +12,27 @@ export const QUIZ_TYPES = {
   },
 };
 
+const easyPopulation = 25_000_000;
+const mediumPopulation = 5_000_000;
+const hardPopulation = 0;
+
 export const QUIZ_SETTINGS = {
   difficulty: {
-    easy: "easy",
-    medium: "medium",
-    hard: "hard",
+    easy: {
+      label: "Easy",
+      minPopulation: easyPopulation,
+      maxPopulation: Infinity,
+    },
+    medium: {
+      label: "Medium",
+      minPopulation: mediumPopulation,
+      maxPopulation: easyPopulation,
+    },
+    hard: {
+      label: "Hard",
+      minPopulation: hardPopulation,
+      maxPopulation: mediumPopulation,
+    },
   },
   questionsAmount: {
     low: 5,
@@ -24,3 +40,5 @@ export const QUIZ_SETTINGS = {
     high: 20,
   },
 };
+
+export const BROKEN_SVG_LIST = ["Sao Tome and Principe"];

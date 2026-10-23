@@ -6,7 +6,7 @@ export default function ScoreBox({ icon, text, current, total, className }) {
         <p>{text}</p>
         <p>
           {current}
-          {total ? `/${total}` : ""}
+          {total ? ` / ${total}` : ""}
         </p>
       </div>
     </div>

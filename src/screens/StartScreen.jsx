@@ -34,21 +34,21 @@ export default function StartScreen({
             selected={difficultyType}
             onClick={onDifficultyType}
           >
-            Easy
+            {difficulty.easy.label}
           </Button>
           <Button
             value={difficulty.medium}
             selected={difficultyType}
             onClick={onDifficultyType}
           >
-            Medium
+            {difficulty.medium.label}
           </Button>
           <Button
             value={difficulty.hard}
             selected={difficultyType}
             onClick={onDifficultyType}
           >
-            Hard
+            {difficulty.hard.label}
           </Button>
         </DifficultySelector>
 

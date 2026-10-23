@@ -1,12 +1,12 @@
 import QuizChoice from "./QuizChoice";
 
-export default function QuizChoices({ onCurrentRound }) {
+export default function QuizChoices({ onNextRound, answers }) {
   return (
     <div className="choices-content-box">
-      <QuizChoice country={"Netherlands"} onClick={onCurrentRound} />
-      <QuizChoice country={"Canada"} onClick={onCurrentRound} />
-      <QuizChoice country={"United States"} onClick={onCurrentRound} />
-      <QuizChoice country={"Poland"} onClick={onCurrentRound} />
+      <QuizChoice country={answers[0]} onClick={onNextRound} />
+      <QuizChoice country={answers[1]} onClick={onNextRound} />
+      <QuizChoice country={answers[2]} onClick={onNextRound} />
+      <QuizChoice country={answers[3]} onClick={onNextRound} />
     </div>
   );
 }

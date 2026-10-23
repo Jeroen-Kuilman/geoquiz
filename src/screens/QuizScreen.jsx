@@ -12,12 +12,11 @@ import Footer from "../components/Footer";
 export default function QuizScreen({
   quizType,
   questionsAmountType,
-  onIsPlaying,
   progress,
-  quizCountries,
   currentCountry,
-
-  onCurrentRound,
+  answers,
+  onIsPlaying,
+  onNextRound,
 }) {
   return (
     <div className="app quiz">
@@ -41,11 +40,9 @@ export default function QuizScreen({
             />
           </div>
         </QuizStats>
-        <QuizPrompt
-          quizCountries={quizCountries}
-          currentCountry={currentCountry}
-        />
-        <QuizChoices onCurrentRound={onCurrentRound} />
+
+        <QuizPrompt currentCountry={currentCountry} />
+        <QuizChoices onNextRound={onNextRound} answers={answers} />
       </div>
       <Footer icon={<FaEarthEurope />} />
     </div>
