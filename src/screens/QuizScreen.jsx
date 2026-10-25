@@ -17,6 +17,8 @@ export default function QuizScreen({
   answers,
   onIsPlaying,
   onNextRound,
+  score,
+  streak,
 }) {
   return (
     <div className="app quiz">
@@ -28,14 +30,14 @@ export default function QuizScreen({
             <ScoreBox
               icon={<FaTrophy />}
               text={"Score"}
-              current={0} // temp
+              current={score} // temp
               total={questionsAmountType}
               className={"score"}
             />
             <ScoreBox
               icon={<FaFire />}
               text={"Streak"}
-              current={0} // temp
+              current={streak} // temp
               className={"streak"}
             />
           </div>

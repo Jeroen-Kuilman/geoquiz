@@ -35,9 +35,9 @@ export const QUIZ_SETTINGS = {
     },
   },
   questionsAmount: {
-    low: 5,
-    average: 10,
-    high: 20,
+    low: 10,
+    average: 20,
+    high: 30,
   },
 };
 

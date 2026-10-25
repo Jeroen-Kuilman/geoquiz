@@ -17,6 +17,7 @@ function App() {
   const [quizCountries, setQuizCountries] = useState([]);
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
@@ -54,10 +55,14 @@ function App() {
   function checkAnswer(rightAnswer, answer) {
     const response =
       rightAnswer.toLowerCase().replace(/\s+/g, "") ===
-      answer.toLowerCase().replace(/\s+/g, "")
-        ? `Correct it was ${rightAnswer}`
-        : `Wrong it was ${rightAnswer}`;
-    console.log(response);
+      answer.toLowerCase().replace(/\s+/g, "");
+
+    if (response) {
+      setScore((score) => score + 1);
+      setStreak((streak) => streak + 1);
+    } else {
+      setStreak(0);
+    }
     return response;
   }
 
@@ -151,6 +156,8 @@ function App() {
       setQuizCountries([]);
       setCurrentRound(0);
       setIsPlaying(false);
+      setScore(0);
+      setStreak(0);
     }
   }
 
@@ -172,9 +179,10 @@ function App() {
       quizType={quizType}
       questionsAmountType={questionsAmountType}
       progress={progress}
-      quizCountries={quizCountries}
       currentCountry={currentCountry}
       answers={answers}
+      score={score}
+      streak={streak}
       onIsPlaying={handleIsPlaying}
       onNextRound={handleNextRound}
     />
