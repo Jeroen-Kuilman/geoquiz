@@ -72,7 +72,6 @@ function App() {
       );
     } else {
       setStreak(0);
-      setHighStreak(0);
     }
     return response;
   }
