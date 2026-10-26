@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 import StartScreen from "./screens/StartScreen";
 import QuizScreen from "./screens/QuizScreen";
-import { QUIZ_TYPES, QUIZ_SETTINGS } from "./data/quizConfig";
+import { QUIZ_STAGES, QUIZ_TYPES, QUIZ_SETTINGS } from "./data/quizConfig";
 
 function App() {
+  const [quizStage, setQuizStage] = useState(QUIZ_STAGES.StartScreen);
   const [quizType, setQuizType] = useState(QUIZ_TYPES.flag.value);
   const [difficultyType, setDifficultyType] = useState(
     QUIZ_SETTINGS.difficulty.easy,
@@ -12,7 +13,6 @@ function App() {
   const [questionsAmountType, setQuestionsAmountType] = useState(
     QUIZ_SETTINGS.questionsAmount.low,
   );
-  const [isPlaying, setIsPlaying] = useState(false);
   const [countries, setCountries] = useState([]);
   const [quizCountries, setQuizCountries] = useState([]);
   const [currentRound, setCurrentRound] = useState(0);
@@ -134,34 +134,26 @@ function App() {
   }
 
   function handleIsPlaying(value) {
-    setIsPlaying(value);
+    setQuizStage(value);
     const selectedCountries = getShuffledCountries(countries, difficultyType);
-
-    const firstCountry = selectedCountries[0];
-    generateAnswers(firstCountry, selectedCountries);
-
     setQuizCountries(selectedCountries);
+    setScore(0);
+    setStreak(0);
+    setCurrentRound(0);
   }
 
   function handleNextRound(value) {
     checkAnswer(currentCountry.name, value);
 
-    if (currentRound !== questionsAmountType - 1) {
-      const nextRound = currentRound + 1;
-      const nextCountry = quizCountries[nextRound];
-      generateAnswers(nextCountry, quizCountries);
+    const nextRound = currentRound + 1;
+    setCurrentRound(nextRound);
 
-      setCurrentRound(nextRound);
-    } else {
-      setQuizCountries([]);
-      setCurrentRound(0);
-      setIsPlaying(false);
-      setScore(0);
-      setStreak(0);
+    if (currentRound === questionsAmountType - 1) {
+      setQuizStage(QUIZ_STAGES.EndScreen);
     }
   }
 
-  if (!isPlaying) {
+  if (quizStage === QUIZ_STAGES.StartScreen) {
     return (
       <StartScreen
         difficultyType={difficultyType}
@@ -176,9 +168,11 @@ function App() {
   }
   return (
     <QuizScreen
+      quizStage={quizStage}
       quizType={quizType}
       questionsAmountType={questionsAmountType}
       progress={progress}
+      currentRound={currentRound}
       currentCountry={currentCountry}
       answers={answers}
       score={score}
@@ -189,5 +183,3 @@ function App() {
   );
 }
 export default App;
-
-//
