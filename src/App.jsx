@@ -11,7 +11,7 @@ import {
 import EndScreen from "./screens/EndScreen";
 
 function App() {
-  const [quizStage, setQuizStage] = useState(QUIZ_STAGES.EndScreen);
+  const [quizStage, setQuizStage] = useState(QUIZ_STAGES.StartScreen);
   const [quizType, setQuizType] = useState(QUIZ_TYPES.flag.value);
   const [difficultyType, setDifficultyType] = useState(
     QUIZ_SETTINGS.difficulty.easy,
@@ -22,7 +22,7 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [quizCountries, setQuizCountries] = useState([]);
   const [currentRound, setCurrentRound] = useState(0);
-  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [streak, setStreak] = useState(0);
   const [highStreak, setHighStreak] = useState(0);
   const [feedbackStage, setFeedbackStage] = useState(false);
@@ -65,7 +65,7 @@ function App() {
       answer.toLowerCase().replace(/\s+/g, "");
 
     if (response) {
-      setScore((score) => score + 1);
+      setCorrectAnswers((correctAnswers) => correctAnswers + 1);
       setStreak((streak) => streak + 1);
       setHighStreak((highStreak) =>
         streak + 1 >= highStreak ? streak + 1 : highStreak,
@@ -163,7 +163,7 @@ function App() {
     setQuizStage(value);
     const selectedCountries = getShuffledCountries(countries, difficultyType);
     setQuizCountries(selectedCountries);
-    setScore(0);
+    setCorrectAnswers(0);
     setStreak(0);
     setCurrentRound(0);
     setAnswers(generateAnswers(selectedCountries[0], selectedCountries));
@@ -175,6 +175,8 @@ function App() {
     setSelectedAnswer(value);
     setFeedbackStage(true);
   }
+
+  console.log(QUIZ_SETTINGS.scoreValues.streakBonus * 6);
 
   if (quizStage === QUIZ_STAGES.StartScreen) {
     return (
@@ -199,7 +201,7 @@ function App() {
         currentRound={currentRound}
         currentCountry={currentCountry}
         answers={answers}
-        score={score}
+        correctAnswers={correctAnswers}
         streak={streak}
         onIsPlaying={handleIsPlaying}
         onNextRound={handleNextRound}
@@ -212,7 +214,7 @@ function App() {
     return (
       <EndScreen
         highStreak={highStreak}
-        score={score}
+        correctAnswers={correctAnswers}
         quizType={quizType}
         progress={progress}
         questionsAmountType={questionsAmountType}

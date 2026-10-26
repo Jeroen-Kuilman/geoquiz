@@ -6,12 +6,13 @@ import QuizStats from "../components/QuizStats";
 import ProgressTracker from "../components/ProgressTracker";
 import ScoreBox from "../components/ScoreBox";
 import Footer from "../components/Footer";
+import EndScore from "../components/EndScore";
 
 import { QUIZ_STAGES } from "../data/quizConfig";
 
 export default function EndScreen({
   highStreak,
-  score,
+  correctAnswers,
   quizType,
   progress,
   questionsAmountType,
@@ -27,8 +28,8 @@ export default function EndScreen({
           <div className="score-boxes">
             <ScoreBox
               icon={<FaTrophy />}
-              text={"Score"}
-              current={score}
+              text={"Correct"}
+              current={correctAnswers}
               total={questionsAmountType}
               className={"score"}
             />
@@ -41,18 +42,22 @@ export default function EndScreen({
           </div>
         </QuizStats>
 
-        <button
-          className="button active"
-          onClick={() => onIsPlaying(QUIZ_STAGES.QuizScreen)}
-        >
-          Again
-        </button>
-        <button
-          className="button active"
-          onClick={() => onIsPlaying(QUIZ_STAGES.StartScreen)}
-        >
-          Menu
-        </button>
+        <div className="endscreen-buttons">
+          <button
+            className="button active"
+            onClick={() => onIsPlaying(QUIZ_STAGES.QuizScreen)}
+          >
+            Again
+          </button>
+          <button
+            className="button active"
+            onClick={() => onIsPlaying(QUIZ_STAGES.StartScreen)}
+          >
+            Menu
+          </button>
+        </div>
+
+        <EndScore correctAnswers={correctAnswers} highStreak={highStreak} />
       </div>
       <Footer icon={<FaEarthEurope />} />
     </div>

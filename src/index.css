@@ -461,3 +461,10 @@ p {
 .quiz-choice.wrong {
   background-color: var(--wrong);
 }
+
+.endscreen-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}

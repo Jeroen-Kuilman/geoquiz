@@ -19,7 +19,7 @@ export default function QuizScreen({
   answers,
   onIsPlaying,
   onNextRound,
-  score,
+  correctAnswers,
   streak,
   selectedAnswer,
   feedbackStage,
@@ -33,8 +33,8 @@ export default function QuizScreen({
           <div className="score-boxes">
             <ScoreBox
               icon={<FaTrophy />}
-              text={"Score"}
-              current={score}
+              text={"Correct"}
+              current={correctAnswers}
               total={questionsAmountType}
               className={"score"}
             />
