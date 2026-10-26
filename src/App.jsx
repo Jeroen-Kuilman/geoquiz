@@ -11,7 +11,7 @@ import {
 import EndScreen from "./screens/EndScreen";
 
 function App() {
-  const [quizStage, setQuizStage] = useState(QUIZ_STAGES.StartScreen);
+  const [quizStage, setQuizStage] = useState(QUIZ_STAGES.EndScreen);
   const [quizType, setQuizType] = useState(QUIZ_TYPES.flag.value);
   const [difficultyType, setDifficultyType] = useState(
     QUIZ_SETTINGS.difficulty.easy,

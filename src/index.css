@@ -426,6 +426,12 @@ p {
 }
 
 .quiz-choice {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+
   padding: 1.5rem 2rem 1.5rem 3rem;
   width: 100%;
   text-align: start;
