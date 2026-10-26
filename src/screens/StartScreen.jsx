@@ -25,7 +25,7 @@ export default function StartScreen({
   const { flag, capital } = QUIZ_TYPES;
   const { difficulty, questionsAmount } = QUIZ_SETTINGS;
   return (
-    <div className="app menu">
+    <div className="app menu screen">
       <MenuHeader />
       <MenuOptions playIcon={<FaPlay />} onClick={onIsPlaying}>
         <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>

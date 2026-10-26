@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 
 import StartScreen from "./screens/StartScreen";
 import QuizScreen from "./screens/QuizScreen";
-import { QUIZ_STAGES, QUIZ_TYPES, QUIZ_SETTINGS } from "./data/quizConfig";
+import {
+  QUIZ_STAGES,
+  QUIZ_TYPES,
+  QUIZ_SETTINGS,
+  TIMER_SETTINGS,
+} from "./data/quizConfig";
+import EndScreen from "./screens/EndScreen";
 
 function App() {
   const [quizStage, setQuizStage] = useState(QUIZ_STAGES.StartScreen);
@@ -18,12 +24,13 @@ function App() {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [highStreak, setHighStreak] = useState(0);
+  const [feedbackStage, setFeedbackStage] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
-  const answers = currentCountry
-    ? generateAnswers(currentCountry, quizCountries)
-    : [];
 
   function getShuffledCountries(countries, difficultyType) {
     const eligibleCountries = countries.filter(
@@ -60,8 +67,12 @@ function App() {
     if (response) {
       setScore((score) => score + 1);
       setStreak((streak) => streak + 1);
+      setHighStreak((highStreak) =>
+        streak + 1 >= highStreak ? streak + 1 : highStreak,
+      );
     } else {
       setStreak(0);
+      setHighStreak(0);
     }
     return response;
   }
@@ -121,6 +132,22 @@ function App() {
     fetchCountryData();
   }, []);
 
+  useEffect(() => {
+    if (!feedbackStage) return;
+    const timeout = setTimeout(() => {
+      const nextRound = currentRound + 1;
+      const nextCountry = quizCountries[nextRound];
+
+      setCurrentRound(nextRound);
+      setAnswers(generateAnswers(nextCountry, quizCountries));
+      if (currentRound === questionsAmountType - 1) {
+        setQuizStage(QUIZ_STAGES.EndScreen);
+      }
+      setFeedbackStage(false);
+    }, TIMER_SETTINGS.ANSWER_FEEDBACK_DURATION * 1000);
+    return () => clearTimeout(timeout);
+  }, [currentRound, feedbackStage, questionsAmountType, quizCountries]);
+
   function handleQuizType(value) {
     setQuizType(value);
   }
@@ -140,17 +167,14 @@ function App() {
     setScore(0);
     setStreak(0);
     setCurrentRound(0);
+    setAnswers(generateAnswers(selectedCountries[0], selectedCountries));
   }
 
   function handleNextRound(value) {
+    if (feedbackStage) return;
     checkAnswer(currentCountry.name, value);
-
-    const nextRound = currentRound + 1;
-    setCurrentRound(nextRound);
-
-    if (currentRound === questionsAmountType - 1) {
-      setQuizStage(QUIZ_STAGES.EndScreen);
-    }
+    setSelectedAnswer(value);
+    setFeedbackStage(true);
   }
 
   if (quizStage === QUIZ_STAGES.StartScreen) {
@@ -166,20 +190,36 @@ function App() {
       />
     );
   }
-  return (
-    <QuizScreen
-      quizStage={quizStage}
-      quizType={quizType}
-      questionsAmountType={questionsAmountType}
-      progress={progress}
-      currentRound={currentRound}
-      currentCountry={currentCountry}
-      answers={answers}
-      score={score}
-      streak={streak}
-      onIsPlaying={handleIsPlaying}
-      onNextRound={handleNextRound}
-    />
-  );
+
+  if (quizStage === QUIZ_STAGES.QuizScreen)
+    return (
+      <QuizScreen
+        quizType={quizType}
+        questionsAmountType={questionsAmountType}
+        progress={progress}
+        currentRound={currentRound}
+        currentCountry={currentCountry}
+        answers={answers}
+        score={score}
+        streak={streak}
+        onIsPlaying={handleIsPlaying}
+        onNextRound={handleNextRound}
+        selectedAnswer={selectedAnswer}
+        feedbackStage={feedbackStage}
+      />
+    );
+
+  if (quizStage === QUIZ_STAGES.EndScreen)
+    return (
+      <EndScreen
+        highStreak={highStreak}
+        score={score}
+        quizType={quizType}
+        progress={progress}
+        questionsAmountType={questionsAmountType}
+        quizStage={quizStage}
+        onIsPlaying={handleIsPlaying}
+      />
+    );
 }
 export default App;

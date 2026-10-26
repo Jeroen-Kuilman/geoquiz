@@ -10,9 +10,9 @@ export default function QuizPrompt({ currentCountry, quizType }) {
           alt="flag"
           style={{
             maxWidth: "15rem",
-            borderStyle: "solid",
-            borderWidth: "1px",
+
             maxHeight: "9rem",
+            boxShadow: "0 1px 2px 1px rgba(0, 0, 0, 0.15)",
           }}
         />
       ) : (

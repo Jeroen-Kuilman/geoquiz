@@ -9,12 +9,8 @@ import QuizPrompt from "../components/QuizPrompt";
 import QuizChoices from "../components/QuizChoices";
 import Footer from "../components/Footer";
 import Timer from "../components/Timer";
-import EndScreen from "./EndScreen";
-
-import { QUIZ_STAGES } from "../data/quizConfig";
 
 export default function QuizScreen({
-  quizStage,
   quizType,
   questionsAmountType,
   progress,
@@ -25,9 +21,11 @@ export default function QuizScreen({
   onNextRound,
   score,
   streak,
+  selectedAnswer,
+  feedbackStage,
 }) {
   return (
-    <div className="app quiz">
+    <div className="app quiz screen">
       <QuizHeader onClick={onIsPlaying} />
       <div className="play-content-box">
         <QuizStats quizType={quizType}>
@@ -48,16 +46,17 @@ export default function QuizScreen({
             />
           </div>
         </QuizStats>
-        {quizStage === QUIZ_STAGES.EndScreen ? (
-          <EndScreen />
-        ) : (
-          <>
-            <Timer currentRound={currentRound} onNextRound={onNextRound} />
 
-            <QuizPrompt currentCountry={currentCountry} quizType={quizType} />
-            <QuizChoices onNextRound={onNextRound} answers={answers} />
-          </>
-        )}
+        <Timer currentRound={currentRound} onNextRound={onNextRound} />
+
+        <QuizPrompt currentCountry={currentCountry} quizType={quizType} />
+        <QuizChoices
+          onNextRound={onNextRound}
+          answers={answers}
+          currentCountry={currentCountry}
+          selectedAnswer={selectedAnswer}
+          feedbackStage={feedbackStage}
+        />
       </div>
       <Footer icon={<FaEarthEurope />} />
     </div>

@@ -19,8 +19,8 @@
   --light-orange: #fff3e6;
   --dark-orange: #c75b12;
 
-  --success: #3fa56b;
-  --error: #d9534f;
+  --correct: #3fa56b;
+  --wrong: #d9534f;
 }
 
 * {
@@ -75,6 +75,22 @@ p {
   opacity: 80%;
 
   z-index: -1;
+}
+
+.screen {
+  animation: screen-enter 0.4s ease;
+}
+
+@keyframes screen-enter {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .menu-header {
@@ -272,7 +288,7 @@ p {
   justify-content: center;
 }
 
-/* Quiz page specific */
+/* Quiz page and End page specific */
 
 .app.quiz {
   background-color: var(--white);
@@ -432,4 +448,10 @@ p {
 .quiz-choice:active {
   transform: translateY(3px);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+.quiz-choice.correct {
+  background-color: var(--correct);
+}
+.quiz-choice.wrong {
+  background-color: var(--wrong);
 }

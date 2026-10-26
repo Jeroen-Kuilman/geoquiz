@@ -49,7 +49,7 @@ export const QUIZ_SETTINGS = {
 
 export const TIMER_SETTINGS = {
   QUESTION_DURATION: 15,
-  ANSWER_FEEDBACK_DURATION: 2,
+  ANSWER_FEEDBACK_DURATION: 0.8,
 };
 
 export const BROKEN_SVG_LIST = ["Sao Tome and Principe"];
