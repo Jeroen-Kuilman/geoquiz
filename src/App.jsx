@@ -28,6 +28,8 @@ function App() {
   const [feedbackStage, setFeedbackStage] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [answerSpeed, setAnswerSpeed] = useState(0);
+  const [speedScore, setSpeedScore] = useState(0);
 
   const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
@@ -70,10 +72,21 @@ function App() {
       setHighStreak((highStreak) =>
         streak + 1 >= highStreak ? streak + 1 : highStreak,
       );
+      setSpeedScore((speedScore) => speedScore + getSpeedPoints(answerSpeed));
     } else {
       setStreak(0);
     }
     return response;
+  }
+
+  function getSpeedPoints(timeRemaining) {
+    const { answerSpeedFast, answerSpeedAverage, answerSpeedSlow } =
+      QUIZ_SETTINGS.scoreValues;
+    if (timeRemaining >= answerSpeedFast.time) return answerSpeedFast.points;
+    else if (timeRemaining >= answerSpeedAverage.time)
+      return answerSpeedAverage.points;
+    else if (timeRemaining >= answerSpeedSlow.time)
+      return answerSpeedSlow.points;
   }
 
   useEffect(function () {
@@ -166,17 +179,18 @@ function App() {
     setCorrectAnswers(0);
     setStreak(0);
     setCurrentRound(0);
+    setHighStreak(0);
     setAnswers(generateAnswers(selectedCountries[0], selectedCountries));
+    setSpeedScore(0);
   }
 
   function handleNextRound(value) {
+    console.log(answerSpeed);
     if (feedbackStage) return;
     checkAnswer(currentCountry.name, value);
     setSelectedAnswer(value);
     setFeedbackStage(true);
   }
-
-  console.log(QUIZ_SETTINGS.scoreValues.streakBonus * 6);
 
   if (quizStage === QUIZ_STAGES.StartScreen) {
     return (
@@ -207,6 +221,7 @@ function App() {
         onNextRound={handleNextRound}
         selectedAnswer={selectedAnswer}
         feedbackStage={feedbackStage}
+        onTimeLeft={setAnswerSpeed}
       />
     );
 
@@ -220,6 +235,7 @@ function App() {
         questionsAmountType={questionsAmountType}
         quizStage={quizStage}
         onIsPlaying={handleIsPlaying}
+        speedScore={speedScore}
       />
     );
 }

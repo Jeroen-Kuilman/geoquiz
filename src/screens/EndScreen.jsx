@@ -1,4 +1,4 @@
-import { FaTrophy, FaFire } from "react-icons/fa";
+import { FaTrophy } from "react-icons/fa";
 import { FaEarthEurope } from "react-icons/fa6";
 
 import QuizHeader from "../components/QuizHeader";
@@ -18,12 +18,13 @@ export default function EndScreen({
   questionsAmountType,
   quizStage,
   onIsPlaying,
+  speedScore,
 }) {
   return (
-    <div className="app quiz screen">
+    <div className="app end screen">
       <QuizHeader quizStage={quizStage} />
-      <div className="play-content-box">
-        <QuizStats quizType={quizType}>
+      <div className="end-content-box">
+        <QuizStats quizType={quizType} quizStage={quizStage}>
           <ProgressTracker progress={progress} />
           <div className="score-boxes">
             <ScoreBox
@@ -33,14 +34,14 @@ export default function EndScreen({
               total={questionsAmountType}
               className={"score"}
             />
-            <ScoreBox
-              icon={<FaFire />}
-              text={"Highest streak"}
-              current={highStreak}
-              className={"streak"}
-            />
           </div>
         </QuizStats>
+
+        <EndScore
+          correctAnswers={correctAnswers}
+          highStreak={highStreak}
+          speedScore={speedScore}
+        />
 
         <div className="endscreen-buttons">
           <button
@@ -56,8 +57,6 @@ export default function EndScreen({
             Menu
           </button>
         </div>
-
-        <EndScore correctAnswers={correctAnswers} highStreak={highStreak} />
       </div>
       <Footer icon={<FaEarthEurope />} />
     </div>

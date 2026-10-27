@@ -23,6 +23,7 @@ export default function QuizScreen({
   streak,
   selectedAnswer,
   feedbackStage,
+  onTimeLeft,
 }) {
   return (
     <div className="app quiz screen">
@@ -47,7 +48,11 @@ export default function QuizScreen({
           </div>
         </QuizStats>
 
-        <Timer currentRound={currentRound} onNextRound={onNextRound} />
+        <Timer
+          currentRound={currentRound}
+          onNextRound={onNextRound}
+          onTimeLeft={onTimeLeft}
+        />
 
         <QuizPrompt currentCountry={currentCountry} quizType={quizType} />
         <QuizChoices

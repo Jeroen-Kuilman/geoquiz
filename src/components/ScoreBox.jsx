@@ -1,7 +1,7 @@
 export default function ScoreBox({ icon, text, current, total, className }) {
   return (
     <div className={`score-box ${className ? className : ""}`}>
-      <span>{icon}</span>
+      <span aria-hidden="true">{icon}</span>
       <div className="score-box-text">
         <p>{text}</p>
         <p>

@@ -23,6 +23,7 @@ const mediumPopulation = 5_000_000;
 const hardPopulation = 0;
 
 const pointsValue = 10;
+
 export const QUIZ_SETTINGS = {
   difficulty: {
     easy: {
@@ -50,10 +51,17 @@ export const QUIZ_SETTINGS = {
   scoreValues: {
     correctAnswer: pointsValue,
     streakBonus: pointsValue * 0.75,
-    answerSpeed: {
-      fast: 5,
-      average: 2,
-      slow: 0,
+    answerSpeedFast: {
+      time: 12,
+      points: 5,
+    },
+    answerSpeedAverage: {
+      time: 7,
+      points: 2,
+    },
+    answerSpeedSlow: {
+      time: 0,
+      points: 0,
     },
   },
 };

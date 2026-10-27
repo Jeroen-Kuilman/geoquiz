@@ -21,6 +21,11 @@
 
   --correct: #3fa56b;
   --wrong: #d9534f;
+
+  --score-card-green-background: #e8f5ec;
+  --score-card-green-text: #1e5631;
+  --score-card-blue-background: ##e8f0f8;
+  --score-card-blue-text: #1b365d;
 }
 
 * {
@@ -362,12 +367,12 @@ p {
   border-radius: 1.5rem;
 }
 
-.score-box.score {
+.score {
   background: var(--light-green-extreme-transparent);
   color: var(--dark-green);
   font-size: 2rem;
 }
-.score-box.streak {
+.streak {
   background-color: var(--light-orange);
   color: var(--dark-orange);
   font-size: 2rem;
@@ -462,9 +467,49 @@ p {
   background-color: var(--wrong);
 }
 
+.end-content-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(96%, 45rem);
+  margin: auto;
+}
+
 .endscreen-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
   width: 100%;
+  margin-top: 5rem;
+}
+.endscore-box {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  width: 95%;
+}
+.endscore-box > span {
+  flex: 0 0 auto;
+}
+.endscore-box-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.endscore-box-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.score-card-green {
+  background: var(--score-card-green-background);
+  color: var(--score-card-green-text);
+  font-size: 1.8rem;
+}
+.score-card-blue {
+  background: var(--score-card-blue-background);
+  color: var(--score-card-blue-text);
+  font-size: 1.8rem;
 }
