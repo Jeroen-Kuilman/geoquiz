@@ -34,6 +34,14 @@ function App() {
   const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
 
+  const maxCorrectAnswerPoints =
+    questionsAmountType * QUIZ_SETTINGS.scoreValues.correctAnswer;
+  const maxStreakBonus =
+    questionsAmountType * QUIZ_SETTINGS.scoreValues.streakBonus;
+  const maxSpeedPoints =
+    questionsAmountType * QUIZ_SETTINGS.scoreValues.answerSpeedFast.points;
+  const maximumScore = maxCorrectAnswerPoints + maxStreakBonus + maxSpeedPoints;
+
   function getShuffledCountries(countries, difficultyType) {
     const eligibleCountries = countries.filter(
       (country) =>
@@ -236,6 +244,7 @@ function App() {
         quizStage={quizStage}
         onIsPlaying={handleIsPlaying}
         speedScore={speedScore}
+        maximumScore={maximumScore}
       />
     );
 }

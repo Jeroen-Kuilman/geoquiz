@@ -15,7 +15,9 @@ export default function EndScoreBox({
           <p>{valueInput}</p>
         </div>
         <div className="endscore-box-row">
-          <p>{textOutput}</p>
+          <p>
+            <strong>{textOutput}</strong>
+          </p>
           <p>
             <strong>{valueOutput}</strong>
           </p>

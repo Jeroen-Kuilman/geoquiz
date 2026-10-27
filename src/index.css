@@ -24,7 +24,7 @@
 
   --score-card-green-background: #e8f5ec;
   --score-card-green-text: #1e5631;
-  --score-card-blue-background: ##e8f0f8;
+  --score-card-blue-background: #e8f0f8;
   --score-card-blue-text: #1b365d;
 }
 
@@ -170,7 +170,7 @@ p {
   padding: 1rem;
 }
 .button {
-  min-width: 8rem;
+  min-width: 9rem;
   background: var(--grey);
   cursor: pointer;
   padding: 0.7rem 1.5rem;
@@ -180,7 +180,7 @@ p {
   border-color: var(--light-green-transparent);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: var(--dark-blue-text);
   font-weight: 700;
 
@@ -232,7 +232,7 @@ p {
   margin-bottom: 1.5rem;
 }
 .content-box-text-section p {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-style: italic;
 }
 
@@ -271,7 +271,7 @@ p {
   cursor: pointer;
 }
 .quiz-type-label p {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
@@ -487,7 +487,6 @@ p {
   align-items: center;
   gap: 1.5rem;
   padding: 1rem 2rem;
-  width: 95%;
 }
 .endscore-box > span {
   flex: 0 0 auto;
@@ -502,6 +501,10 @@ p {
 .endscore-box-row {
   display: grid;
   grid-template-columns: 1fr auto;
+}
+
+.endscore-box-row p {
+  font-size: 1.5rem;
 }
 .score-card-green {
   background: var(--score-card-green-background);

@@ -20,6 +20,7 @@ export default function QuizPrompt({ currentCountry, quizType }) {
           style={{
             maxWidth: "15rem",
             maxHeight: "9rem",
+            fontSize: "2.6rem",
           }}
         >
           <strong>{currentCountry.capital}</strong>

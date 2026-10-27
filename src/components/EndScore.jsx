@@ -3,12 +3,17 @@ import { FaFire, FaClock, FaCheck, FaFlagCheckered } from "react-icons/fa";
 
 import EndScoreBox from "./EndScoreBox";
 
-export default function EndScore({ correctAnswers, highStreak, speedScore }) {
+export default function EndScore({
+  correctAnswers,
+  highStreak,
+  speedScore,
+  maximumScore,
+}) {
   const totalPoints = Math.round(
     QUIZ_SETTINGS.scoreValues.correctAnswer * correctAnswers,
   );
   const totalMultiplier = Math.round(
-    QUIZ_SETTINGS.scoreValues.streakBonus * correctAnswers,
+    QUIZ_SETTINGS.scoreValues.streakBonus * highStreak,
   );
 
   const totalScore = Math.round(totalPoints + totalMultiplier + speedScore);
@@ -18,7 +23,7 @@ export default function EndScore({ correctAnswers, highStreak, speedScore }) {
       <EndScoreBox
         icon={<FaCheck />}
         textInput={"Questions correctly answered"}
-        textOutput={"Points to add: "}
+        textOutput={"Points to add"}
         className={"score-card-green"}
         valueInput={correctAnswers}
         valueOutput={totalPoints}
@@ -27,7 +32,7 @@ export default function EndScore({ correctAnswers, highStreak, speedScore }) {
       <EndScoreBox
         icon={<FaFire />}
         textInput={"Highest streak"}
-        textOutput={"Points to add: "}
+        textOutput={"Points to add"}
         className={"score-card-blue"}
         valueInput={highStreak}
         valueOutput={totalMultiplier}
@@ -36,14 +41,16 @@ export default function EndScore({ correctAnswers, highStreak, speedScore }) {
       <EndScoreBox
         icon={<FaClock />}
         textInput={"Speed bonus"}
-        textOutput={"Points to add: "}
+        textOutput={"Points to add"}
         className={"score-card-green"}
         valueOutput={speedScore}
       />
       <EndScoreBox
         icon={<FaFlagCheckered />}
-        textOutput={"Total score: "}
+        textInput={"Maximum achievable score"}
+        textOutput={"Your final score"}
         className={"score-card-blue"}
+        valueInput={maximumScore}
         valueOutput={totalScore}
       />
     </div>

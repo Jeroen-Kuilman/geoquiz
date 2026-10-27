@@ -19,6 +19,7 @@ export default function EndScreen({
   quizStage,
   onIsPlaying,
   speedScore,
+  maximumScore,
 }) {
   return (
     <div className="app end screen">
@@ -41,6 +42,7 @@ export default function EndScreen({
           correctAnswers={correctAnswers}
           highStreak={highStreak}
           speedScore={speedScore}
+          maximumScore={maximumScore}
         />
 
         <div className="endscreen-buttons">
