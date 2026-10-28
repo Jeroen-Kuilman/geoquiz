@@ -1,3 +1,5 @@
+import saoTomeFlag from "../assets/Flag_of_São_Tomé_and_Príncipe.svg";
+
 import { FaFlag, FaCity } from "react-icons/fa";
 export const QUIZ_STAGES = {
   StartScreen: "startscreen",
@@ -71,4 +73,6 @@ export const TIMER_SETTINGS = {
   ANSWER_FEEDBACK_DURATION: 0.8,
 };
 
-export const BROKEN_SVG_LIST = ["Sao Tome and Principe"];
+export const BROKEN_SVG_LIST = {
+  "Sao Tome and Principe": saoTomeFlag,
+};

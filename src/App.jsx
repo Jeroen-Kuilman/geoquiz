@@ -7,6 +7,7 @@ import {
   QUIZ_TYPES,
   QUIZ_SETTINGS,
   TIMER_SETTINGS,
+  BROKEN_SVG_LIST,
 } from "./data/quizConfig";
 import EndScreen from "./screens/EndScreen";
 
@@ -30,6 +31,8 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answerSpeed, setAnswerSpeed] = useState(0);
   const [speedScore, setSpeedScore] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchMessage, setFetchMessage] = useState("");
 
   const currentCountry = quizCountries[currentRound];
   const progress = (currentRound / questionsAmountType) * 100;
@@ -41,6 +44,81 @@ function App() {
   const maxSpeedPoints =
     questionsAmountType * QUIZ_SETTINGS.scoreValues.answerSpeedFast.points;
   const maximumScore = maxCorrectAnswerPoints + maxStreakBonus + maxSpeedPoints;
+
+  useEffect(function () {
+    const fetchCountryData = async function () {
+      setIsLoading(true);
+      setFetchMessage("");
+      try {
+        const [countryInfoRes, countryPopRes] = await Promise.all([
+          fetch(
+            "https://countriesnow.space/api/v0.1/countries/info?returns=name,flag,capital",
+          ),
+          fetch("https://countriesnow.space/api/v0.1/countries/population"),
+        ]);
+
+        if (!countryInfoRes.ok && !countryPopRes.ok)
+          throw new Error("Complete fetch failure");
+
+        if (!countryInfoRes.ok || !countryPopRes.ok)
+          throw new Error("Partial fetch failure");
+
+        const [countryInfoData, countryPopData] = await Promise.all([
+          countryInfoRes.json(),
+          countryPopRes.json(),
+        ]);
+
+        const populations = countryPopData.data;
+
+        const countries = countryInfoData.data
+          .map((country) => {
+            const populationData = populations.find(
+              (p) => p.country === country.name,
+            );
+
+            const latestPopulation =
+              populationData?.populationCounts?.at(-1)?.value ?? null;
+
+            return {
+              name: country.name,
+              flag: BROKEN_SVG_LIST[country.name] ?? country.flag,
+              capital: country.capital,
+              population: Number(latestPopulation),
+            };
+          })
+          .filter(
+            (country) =>
+              country.name &&
+              country.capital &&
+              country.flag &&
+              country.population > 0,
+          );
+
+        setCountries(countries);
+      } catch (err) {
+        setFetchMessage(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCountryData();
+  }, []);
+
+  useEffect(() => {
+    if (!feedbackStage) return;
+    const timeout = setTimeout(() => {
+      const nextRound = currentRound + 1;
+      const nextCountry = quizCountries[nextRound];
+
+      setCurrentRound(nextRound);
+      setAnswers(generateAnswers(nextCountry, quizCountries));
+      if (currentRound === questionsAmountType - 1) {
+        setQuizStage(QUIZ_STAGES.EndScreen);
+      }
+      setFeedbackStage(false);
+    }, TIMER_SETTINGS.ANSWER_FEEDBACK_DURATION * 1000);
+    return () => clearTimeout(timeout);
+  }, [currentRound, feedbackStage, questionsAmountType, quizCountries]);
 
   function getShuffledCountries(countries, difficultyType) {
     const eligibleCountries = countries.filter(
@@ -97,77 +175,6 @@ function App() {
       return answerSpeedSlow.points;
   }
 
-  useEffect(function () {
-    const fetchCountryData = async function () {
-      try {
-        const [countryInfoRes, countryPopRes] = await Promise.all([
-          fetch(
-            "https://countriesnow.space/api/v0.1/countries/info?returns=name,flag,capital",
-          ),
-          fetch("https://countriesnow.space/api/v0.1/countries/population"),
-        ]);
-
-        if (!countryInfoRes.ok && !countryPopRes.ok)
-          throw new Error("Complete fetch failure");
-
-        if (!countryInfoRes.ok || !countryPopRes.ok)
-          throw new Error("Partial fetch failure");
-
-        const [countryInfoData, countryPopData] = await Promise.all([
-          countryInfoRes.json(),
-          countryPopRes.json(),
-        ]);
-
-        const populations = countryPopData.data;
-
-        const countries = countryInfoData.data
-          .map((country) => {
-            const populationData = populations.find(
-              (p) => p.country === country.name,
-            );
-
-            const latestPopulation =
-              populationData?.populationCounts?.at(-1)?.value ?? null;
-
-            return {
-              name: country.name,
-              flag: country.flag,
-              capital: country.capital,
-              population: Number(latestPopulation),
-            };
-          })
-          .filter(
-            (country) =>
-              country.name &&
-              country.capital &&
-              country.flag &&
-              country.population > 0,
-          );
-
-        setCountries(countries);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchCountryData();
-  }, []);
-
-  useEffect(() => {
-    if (!feedbackStage) return;
-    const timeout = setTimeout(() => {
-      const nextRound = currentRound + 1;
-      const nextCountry = quizCountries[nextRound];
-
-      setCurrentRound(nextRound);
-      setAnswers(generateAnswers(nextCountry, quizCountries));
-      if (currentRound === questionsAmountType - 1) {
-        setQuizStage(QUIZ_STAGES.EndScreen);
-      }
-      setFeedbackStage(false);
-    }, TIMER_SETTINGS.ANSWER_FEEDBACK_DURATION * 1000);
-    return () => clearTimeout(timeout);
-  }, [currentRound, feedbackStage, questionsAmountType, quizCountries]);
-
   function handleQuizType(value) {
     setQuizType(value);
   }
@@ -181,6 +188,7 @@ function App() {
   }
 
   function handleIsPlaying(value) {
+    if (isLoading || countries.length === 0) return;
     setQuizStage(value);
     const selectedCountries = getShuffledCountries(countries, difficultyType);
     setQuizCountries(selectedCountries);
@@ -210,6 +218,9 @@ function App() {
         onDifficultyType={handleDifficultyType}
         onQuestionsAmountType={handleQuestionsAmountType}
         onIsPlaying={handleIsPlaying}
+        fetchMessage={fetchMessage}
+        isLoading={isLoading}
+        countries={countries}
       />
     );
   }

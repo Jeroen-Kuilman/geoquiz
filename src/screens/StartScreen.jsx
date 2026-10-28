@@ -21,13 +21,22 @@ export default function StartScreen({
   onDifficultyType,
   onQuestionsAmountType,
   onIsPlaying,
+  fetchMessage,
+  isLoading,
+  countries,
 }) {
   const { flag, capital } = QUIZ_TYPES;
   const { difficulty, questionsAmount } = QUIZ_SETTINGS;
   return (
     <div className="app menu screen">
       <MenuHeader />
-      <MenuOptions playIcon={<FaPlay />} onClick={onIsPlaying}>
+      <MenuOptions
+        playIcon={<FaPlay />}
+        onClick={onIsPlaying}
+        fetchMessage={fetchMessage}
+        isLoading={isLoading}
+        countries={countries}
+      >
         <DifficultySelector difficultyIcon={<FaBalanceScaleLeft />}>
           <Button
             value={difficulty.easy}
