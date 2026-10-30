@@ -201,7 +201,6 @@ function App() {
   }
 
   function handleNextRound(value) {
-    console.log(answerSpeed);
     if (feedbackStage) return;
     checkAnswer(currentCountry.name, value);
     setSelectedAnswer(value);
