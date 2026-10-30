@@ -201,10 +201,6 @@ p {
   transform: translateY(3px);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
-.button:hover {
-  transform: translateY(-1px);
-}
-
 .button.active {
   background-color: var(--dark-green);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -263,10 +259,6 @@ p {
   transition:
     background-color 0.2s,
     transform 0.1s;
-}
-
-.quiz-type-box:hover {
-  transform: translateY(-1px);
 }
 
 .quiz-type-label {
@@ -478,10 +470,6 @@ p {
 .quiz-choice.wrong {
   background-color: var(--wrong);
 }
-.quiz-choice:hover {
-  transform: translateY(-1px);
-}
-
 .app.end {
   background: var(--white);
 }
@@ -534,6 +522,14 @@ p {
   background: var(--score-card-blue-background);
   color: var(--score-card-blue-text);
   font-size: var(--font-size-large);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover,
+  .quiz-type-box:hover,
+  .quiz-choice:hover {
+    transform: translateY(-1px);
+  }
 }
 
 @media (min-width: 768px) {
