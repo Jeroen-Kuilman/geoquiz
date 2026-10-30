@@ -2,7 +2,7 @@
 
 A mobile-first multiple-choice quiz app for learning country flags and capitals.
 
-![Gameplay screenshot](./screenshot.png)
+![Gameplay screenshot](/src/assets/screenshot.png)
 
 ## Live Demo
 
